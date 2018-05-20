@@ -1,0 +1,4 @@
+vendor
+temp
+composer.lock
+.DS_STORE

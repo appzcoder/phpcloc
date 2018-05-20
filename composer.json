@@ -1,0 +1,17 @@
+{
+    "name": "appzcoder/phpcloc",
+    "authors": [
+        {
+            "name": "Sohel Amin",
+            "email": "sohelamincse@gmail.com"
+        }
+    ],
+    "require": {
+        "symfony/console": "^4.0"
+    },
+    "autoload": {
+        "psr-4": {
+            "Appzcoder\\PHPCloc\\": "src/"
+        }
+    }
+}
