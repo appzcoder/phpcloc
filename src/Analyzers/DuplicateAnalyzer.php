@@ -100,12 +100,12 @@ class DuplicateAnalyzer
                 $isMultilines = false;
             }
 
-            $lineProperties['code'] = $trimLine;
+            $lineProperties['code'] = $currentLine;
             $lines[] = $lineProperties;
         }
 
         $code = array_filter($lines, function ($line) {
-            if (isset($line['blank']) || isset($line['comment']) || in_array($line['code'], ['{', '}'])) {
+            if (isset($line['blank']) || isset($line['comment'])) {
                 return false;
             }
 
