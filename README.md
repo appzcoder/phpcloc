@@ -1,5 +1,5 @@
 # PHPCloc
-Cloc & Code duplication checker written in PHP
+:rocket: Cloc & duplicate code checker written in PHP
 
 ## Requirements
     PHP >= 5.4
@@ -15,7 +15,7 @@ Cloc
 $ phpcloc cloc .
 ```
 
-Dublicate code checker
+Duplicate code checker
 ```
 $ phpcloc duplicate . --ext=php
 ```

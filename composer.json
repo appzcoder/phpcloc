@@ -1,5 +1,13 @@
 {
     "name": "appzcoder/phpcloc",
+    "license": "MIT",
+    "description": "Cloc & duplicate code checker tool.",
+    "keywords": [
+        "phpcloc",
+        "cloc",
+        "count lines of code",
+        "duplicate code checker"
+    ],
     "authors": [
         {
             "name": "Sohel Amin",
@@ -13,5 +21,8 @@
         "psr-4": {
             "Appzcoder\\PHPCloc\\": "src/"
         }
-    }
+    },
+    "bin": [
+        "phpcloc"
+    ]
 }
