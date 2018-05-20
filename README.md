@@ -2,7 +2,7 @@
 :rocket: Cloc & duplicate code checker written in PHP
 
 ## Requirements
-    PHP >= 5.4
+    PHP >= 5.5.9
 
 ## Installation
 ```
