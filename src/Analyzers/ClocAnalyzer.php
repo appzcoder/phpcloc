@@ -231,13 +231,11 @@ class ClocAnalyzer
                 // Allow recursion
                 if ($iterator->hasChildren() && !in_array($current->getFilename(), explode(',', $exclude))) {
                     return true;
-                }
-
-                if (!$ext || ($current->isFile() && in_array($current->getExtension(), explode(',', $ext)))) {
+                } elseif ($current->isFile() && (in_array($current->getExtension(), explode(',', $ext)) || !$ext)) {
                     return true;
+                } else {
+                    return false;
                 }
-
-                return false;
             }
         );
         $files = new RecursiveIteratorIterator($filterIterator);
@@ -258,7 +256,7 @@ class ClocAnalyzer
      */
     protected function processLines(SplFileObject $file)
     {
-        $extension = strtolower($file->getExtension());
+        $extension = $file->getExtension();
 
         $totalLines = 0;
         $totalBlankLines = 0;
