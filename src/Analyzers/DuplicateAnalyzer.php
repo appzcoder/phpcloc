@@ -64,11 +64,14 @@ class DuplicateAnalyzer
     protected function processLines(SplFileObject $file)
     {
         $filename = $file->getPathname();
+
+        $lines = [];
         $totalLines = 0;
-        $code = [];
+        $isMultilines = false;
         while ($file->valid()) {
             $currentLine = $file->fgets();
             $trimLine = trim($currentLine);
+            $lineProperties = [];
 
             // Ignoring the last new line
             if ($file->eof() && empty($trimLine)) {
@@ -76,15 +79,42 @@ class DuplicateAnalyzer
             }
 
             $totalLines ++;
-
-            if (!empty($trimLine)) {
-                $code[] = $trimLine;
+            if (empty($trimLine)) {
+                $lineProperties['blank'] = true;
             }
+
+            // Detecting comments
+            if (strpos($trimLine, '//') === 0
+                || strpos($trimLine, '#') === 0) {
+                $lineProperties['comment'] = true;
+            }
+
+            // Detecting multilines comments
+            if (strpos($trimLine, '/*') === 0) {
+                $isMultilines = true;
+            }
+            if ($isMultilines) {
+                $lineProperties['comment'] = true;
+            }
+            if (strpos($trimLine, '*/') === 0) {
+                $isMultilines = false;
+            }
+
+            $lineProperties['code'] = $trimLine;
+            $lines[] = $lineProperties;
         }
 
-        $totalCode = count($code);
-        $uniqueCode = array_unique($code);
-        $totalUniqueCode = count($uniqueCode);
+        $code = array_filter($lines, function ($line) {
+            if (isset($line['blank']) || isset($line['comment']) || in_array($line['code'], ['{', '}'])) {
+                return false;
+            }
+
+            return true;
+        });
+
+        $codeFlatten = array_column($code, 'code');
+        $totalCode = count($codeFlatten);
+        $totalUniqueCode = count(array_unique($codeFlatten));
         $duplicate = $totalCode - $totalUniqueCode;
 
         if ($duplicate > 0) {
