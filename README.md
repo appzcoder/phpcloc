@@ -6,6 +6,19 @@
     PHP >= 5.5.9
 
 ## Installation
+### Manual
+```
+$ wget https://raw.githubusercontent.com/appzcoder/phpcloc/master/phpcloc.phar -O phpcloc
+// or
+$ curl -L https://raw.githubusercontent.com/appzcoder/phpcloc/master/phpcloc.phar -o phpcloc
+```
+Then
+```
+$ sudo chmod a+x phpcloc
+$ sudo mv phpcloc /usr/local/bin/phpcloc
+```
+
+### Composer
 ```
 $ composer global require appzcoder/phpcloc
 ```

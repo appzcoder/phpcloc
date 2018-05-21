@@ -2,3 +2,4 @@ vendor
 temp
 composer.lock
 .DS_STORE
+create-phar.php
