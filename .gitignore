@@ -3,3 +3,4 @@ temp
 composer.lock
 .DS_STORE
 generate-phar.php
+phpcloc.phar

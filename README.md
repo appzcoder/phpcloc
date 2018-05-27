@@ -8,9 +8,9 @@
 ## Installation
 ### Manual
 ```
-$ wget https://raw.githubusercontent.com/appzcoder/phpcloc/master/phpcloc.phar -O phpcloc
+$ wget https://github.com/appzcoder/phpcloc/releases/download/v0.0.2/phpcloc.phar -O phpcloc
 // or
-$ curl -L https://raw.githubusercontent.com/appzcoder/phpcloc/master/phpcloc.phar -o phpcloc
+$ curl -L https://github.com/appzcoder/phpcloc/releases/download/v0.0.2/phpcloc.phar -o phpcloc
 ```
 Then
 ```

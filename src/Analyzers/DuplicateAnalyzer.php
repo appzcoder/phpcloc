@@ -72,7 +72,10 @@ class DuplicateAnalyzer
             $lineNo = ($file->key() + 1);
 
             if ($foundIndex = array_search($trimLine, array_column($lines, 'code'))) {
-                $duplicates[] = $lines[$foundIndex]['lineNo'];
+                $foundLineNo = $lines[$foundIndex]['lineNo'];
+                if (!in_array($foundLineNo, $duplicates)) {
+                    $duplicates[] = $foundLineNo;
+                }
                 $duplicates[] = $lineNo;
             }
 
@@ -87,10 +90,15 @@ class DuplicateAnalyzer
         $totalDuplicates = count($duplicates);
         if ($totalDuplicates > 0) {
             sort($duplicates);
+            $duplicatesStr = '';
+            foreach (array_chunk($duplicates, 10) as $chunk) {
+                $duplicatesStr .= implode(', ', $chunk) . PHP_EOL;
+            }
+
             $this->stats[$filename] = [
                 'file' => $filename,
                 'duplicate' => $totalDuplicates,
-                'line_no' => implode(',', $duplicates),
+                'line_no' => $duplicatesStr,
             ];
         }
     }
