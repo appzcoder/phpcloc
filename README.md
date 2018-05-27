@@ -34,7 +34,7 @@ $ phpcloc cloc .
 ```
 $ phpcloc duplicate . --ext=php
 ```
-<img width="935" alt="duplicate" src="https://user-images.githubusercontent.com/1708683/40279915-21336d30-5c6d-11e8-910c-e56e1349f5a6.png">
+<img width="1287" alt="duplicate" src="https://user-images.githubusercontent.com/1708683/40583089-056da3ea-61a9-11e8-95ca-e68504d86338.png">
 
 #### Available Commands
 ```
