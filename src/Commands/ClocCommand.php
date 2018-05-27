@@ -52,6 +52,11 @@ class ClocCommand extends Command
         $exclude = $input->getOption('exclude');
 
         $stats = array_values((new ClocAnalyzer($path, $ext, $exclude))->stats());
+        if (count($stats) === 0) {
+            $output->writeln('No files found.');
+            return;
+        }
+
         array_push(
             $stats,
             new TableSeparator(),

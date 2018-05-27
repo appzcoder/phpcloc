@@ -66,62 +66,31 @@ class DuplicateAnalyzer
         $filename = $file->getPathname();
 
         $lines = [];
-        $totalLines = 0;
-        $isMultilines = false;
-        while ($file->valid()) {
-            $currentLine = $file->fgets();
-            $trimLine = trim($currentLine);
-            $lineProperties = [];
+        $duplicates = [];
+        foreach ($file as $line) {
+            $trimLine = trim($line);
+            $lineNo = ($file->key() + 1);
 
-            // Ignoring the last new line
-            if ($file->eof() && empty($trimLine)) {
-                break;
+            if ($foundIndex = array_search($trimLine, array_column($lines, 'code'))) {
+                $duplicates[] = $lines[$foundIndex]['lineNo'];
+                $duplicates[] = $lineNo;
             }
 
-            $totalLines ++;
-            if (empty($trimLine)) {
-                $lineProperties['blank'] = true;
+            if (strlen($trimLine) > 3) {
+                $lines[] = [
+                    'lineNo' => $lineNo,
+                    'code' => $trimLine,
+                ];
             }
-
-            // Detecting comments
-            if (strpos($trimLine, '//') === 0
-                || strpos($trimLine, '#') === 0) {
-                $lineProperties['comment'] = true;
-            }
-
-            // Detecting multilines comments
-            if (strpos($trimLine, '/*') === 0) {
-                $isMultilines = true;
-            }
-            if ($isMultilines) {
-                $lineProperties['comment'] = true;
-            }
-            if (strpos($trimLine, '*/') === 0) {
-                $isMultilines = false;
-            }
-
-            $lineProperties['code'] = $currentLine;
-            $lines[] = $lineProperties;
         }
 
-        $code = array_filter($lines, function ($line) {
-            if (isset($line['blank']) || isset($line['comment'])) {
-                return false;
-            }
-
-            return true;
-        });
-
-        $codeFlatten = array_column($code, 'code');
-        $totalCode = count($codeFlatten);
-        $totalUniqueCode = count(array_unique($codeFlatten));
-        $duplicate = $totalCode - $totalUniqueCode;
-
-        if ($duplicate > 0) {
+        $totalDuplicates = count($duplicates);
+        if ($totalDuplicates > 0) {
+            sort($duplicates);
             $this->stats[$filename] = [
                 'file' => $filename,
-                'line' => $totalLines,
-                'duplicate' => $duplicate,
+                'duplicate' => $totalDuplicates,
+                'line_no' => implode(',', $duplicates),
             ];
         }
     }

@@ -8,6 +8,7 @@ use Symfony\Component\Console\Input\InputInterface;
 use Symfony\Component\Console\Output\OutputInterface;
 use Symfony\Component\Console\Helper\Table;
 use Symfony\Component\Console\Helper\TableSeparator;
+use Symfony\Component\Console\Helper\TableCell;
 use Symfony\Component\Console\Input\InputArgument;
 use Symfony\Component\Console\Input\InputOption;
 
@@ -53,23 +54,28 @@ class DuplicateCommand extends Command
         $exclude = $input->getOption('exclude');
 
         $stats = (new DuplicateAnalyzer($path, $ext, $exclude))->stats();
+        if (count($stats) === 0) {
+            $output->writeln('No files found.');
+            return;
+        }
+
         array_push(
             $stats,
             new TableSeparator(),
             [
                 'Total',
-                array_reduce($stats, function ($carry, $item) {
-                    return $carry + $item['line'];
-                }),
-                array_reduce($stats, function ($carry, $item) {
-                    return $carry + $item['duplicate'];
-                }),
+                new TableCell(
+                    array_reduce($stats, function ($carry, $item) {
+                        return $carry + $item['duplicate'];
+                    }),
+                    ['colspan' => 2]
+                ),
             ]
         );
 
         $table = new Table($output);
         $table
-            ->setHeaders(['File', 'Line', 'Duplicate'])
+            ->setHeaders(['File', 'Duplicate', 'In Line(s)'])
             ->setRows($stats)
         ;
         $table->render();

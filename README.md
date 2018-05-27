@@ -46,7 +46,6 @@ $ phpcloc duplicate directory --ext=php --exclude=vendor
 ```
 
 ## Todo
-- Line number show on duplicate code checker command
 - Improve algorithm complexity
 - Testing
 
