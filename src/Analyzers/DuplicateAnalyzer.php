@@ -71,19 +71,16 @@ class DuplicateAnalyzer
             $trimLine = trim($line);
             $lineNo = ($file->key() + 1);
 
-            if ($foundIndex = array_search($trimLine, array_column($lines, 'code'))) {
-                $foundLineNo = $lines[$foundIndex]['lineNo'];
+            if (isset($lines[$trimLine])) {
+                $foundLineNo = $lines[$trimLine];
                 if (!in_array($foundLineNo, $duplicates)) {
                     $duplicates[] = $foundLineNo;
                 }
-                $duplicates[] = $lineNo;
-            }
 
-            if (strlen($trimLine) > 3) {
-                $lines[] = [
-                    'lineNo' => $lineNo,
-                    'code' => $trimLine,
-                ];
+               $duplicates[] = $lineNo;
+            } else if (strlen($trimLine) > 3) {
+                // Non duplicate first line
+                $lines[$trimLine] = $lineNo;
             }
         }
 
